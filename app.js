@@ -1,3 +1,5 @@
+import React from "react";
+import ReactDOM from "react-dom/client";
 //02 . Create this structure using React
 // <div id="container">
 //     <div id="child1">
@@ -15,7 +17,7 @@ const container = React.createElement(
   { id: "container" },
   [
     React.createElement("div", { id: "child1" }, [
-      React.createElement("h1", {}, "I am first h1"),
+      React.createElement("h1", {}, "I am first h1ss"),
       React.createElement("h1", {}, "I am first h2"),
     ]),
   ],
