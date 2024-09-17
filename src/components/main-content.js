@@ -1,14 +1,18 @@
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 // import { resList } from "../utils/mock-data";
-import { Card } from "./card";
+import Card, { withPromotedLabel } from "./card";
 import { Shimmer } from "./shimmer";
 import { Link } from "react-router-dom";
+import UserContext from "../utils/UserContext";
 // import { SearchComponent } from "./search";
 
 export const MainContent = () => {
   const [listOfRes, setListOfRes] = useState([]);
   const [listOfResToDisplay, setListOfResToDisplay] = useState([]);
   const [searchValue, setSearchValue] = useState("");
+  const { loggedInUser, setLoggedInUser } = useContext(UserContext);
+
+  const PromotedCard = withPromotedLabel(Card);
 
   const fetchData = async () => {
     const data = await fetch(
@@ -39,13 +43,14 @@ export const MainContent = () => {
   }, [listOfRes]);
 
   // conditional rendering
-  return listOfRes.length == 0 ? (
+  return listOfRes?.length == 0 ? (
     <Shimmer />
   ) : (
-    <div className="main-content">
+    <div className="mt-4 ml-3">
       <>
-        <div className="search-box">
+        <div className="flex gap-2">
           <input
+            className="border border-black rounded-sm"
             type="text"
             placeholder="Enter product"
             value={searchValue}
@@ -64,6 +69,13 @@ export const MainContent = () => {
           >
             search
           </button>
+
+          <input
+            type="text"
+            value={loggedInUser}
+            onChange={(e) => setLoggedInUser(e.target.value)}
+            className="border border-black pl-4 pr-4 rounded-sm"
+          ></input>
         </div>
         <div>
           <button
@@ -80,14 +92,14 @@ export const MainContent = () => {
           </button>
         </div>
       </>
-      <div className="featured-products">
-        {listOfResToDisplay.map((resta) => (
-          <Link
-            className="card-wrapper"
-            to={`/restaurants/${resta?.info?.id}`}
-            key={resta?.info?.id}
-          >
-            <Card resData={resta} />
+      <div className="flex gap-4">
+        {listOfResToDisplay?.map((resta) => (
+          <Link to={`/restaurants/${resta?.info?.id}`} key={resta?.info?.id}>
+            {resta.info.promoted ? (
+              <PromotedCard resData={resta} />
+            ) : (
+              <Card resData={resta} />
+            )}
           </Link>
         ))}
       </div>

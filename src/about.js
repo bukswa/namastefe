@@ -1,4 +1,4 @@
-import UserClass from "./user-class";
+import UserClass from "./components/user-class";
 
 export const AboutPage = () => {
   return (
