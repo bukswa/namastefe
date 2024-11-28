@@ -3,9 +3,12 @@ import { LOGO_URL } from "../utils/constants";
 import { Link } from "react-router-dom";
 import { useOnlineState } from "../utils/use-online-state";
 import UserContext from "../utils/UserContext";
+import useSubscribeStore from "./store/use-subscribe-store";
 
 export const Header = () => {
   const [authBtn, setAuthBtn] = useState("Login");
+  // const cartItemsTotal = useSelector((store) => store.cart.total);
+  const cartItemsTotal = useSubscribeStore("cart.total");
   const onlineStatus = useOnlineState();
   const { loggedInUser } = useContext(UserContext);
   return (
@@ -26,8 +29,10 @@ export const Header = () => {
             <li>
               <Link to="/contactus">Contact Us</Link>
             </li>
-            <li>
-              <Link to="/cart">Cart</Link>
+            <li className="border-orange-400 rounded-md border-2 bg-slate-700 p-1 text-white">
+              <Link to="/cart" className="font-bold">
+                Cart - {cartItemsTotal} Items 🛒
+              </Link>
             </li>
             <li>
               <button
